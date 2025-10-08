@@ -25,4 +25,4 @@ For collaboration:
 
 Owner: Grace Stewart
 
-Collaborator: Name 2
+Collaborator: Tallen Vidal
