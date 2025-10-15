@@ -10,9 +10,9 @@ toc: true
 ## Install and Load Libraries
 
 ```{r Libraries}
-install.packages("tidycensus")
-install.packages("reactable")
-install.packages("ggpubr")
+#install.packages("tidycensus")
+#install.packages("reactable")
+#install.packages("ggpubr")
 
 library(tidycensus)  # star of the show, what we will use to import data
 library(tidyverse) # you know her
@@ -104,17 +104,30 @@ girafe(ggobj = oahu_poverty_map, width = 700, height = 400)
 
 Here is a [list of the Tract Names with reference numbers](https://files.hawaii.gov/dbedt/census/census_2020/data/2020-tract-names.pdf)
 
-Now let's look at family poverty in Honolulu County over time
-
 ## Try an example of your own
 
 ```{r}
 # get the data
-
+maui_poverty <- get_acs(
+  geography = "tract",
+  variables = c(percent_poverty = "DP03_0119P"),
+  state = "HI",
+  county = "Maui",
+  geometry = TRUE,
+  output = "wide",
+  year = 2023)
 
 # map it
+maui_poverty_map <- ggplot(maui_poverty) +
+  geom_sf_interactive(
+    aes(
+      fill = percent_povertyE,
+      tooltip = paste(NAME, ": ", percent_povertyE, "%"),
+      data_id = NAME)) +
+  scale_fill_viridis_c(option = "plasma") +
+  theme_void() 
 
-
+girafe(ggobj = maui_poverty_map, width = 700, height = 400)
 ```
 
 ## Back to Exploring Poverty...
@@ -223,7 +236,7 @@ Directions:
 
 REMEMBER! [Pull]{.underline} before working in the `-collab.qmd` file. [Save, Commit, and Push]{.underline} your changes when you are done. The next person should [Pull]{.underline} before working, and so on.
 
-### Import Data
+### Import Data - Tallen
 
 Investigating (insert variable here) on Oahu at the census tract level.
 
@@ -232,21 +245,21 @@ Investigating (insert variable here) on Oahu at the census tract level.
 
 ```
 
-### Mapping
+### Mapping - Tallen
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 
 
 ```
 
-### Time Series
+### Time Series - Grace
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 
 
 ```
 
-### Scatter Plot
+### Scatter Plot - Grace
 
 Exploring the relationship between (insert variable here) and (insert variable here) with a scatter plot
 
