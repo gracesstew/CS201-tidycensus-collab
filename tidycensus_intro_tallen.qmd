@@ -75,7 +75,7 @@ oahu_poverty <- get_acs(
   state = "HI",
   county = "Honolulu",
   geometry = TRUE,
-  output = "wide",
+  output = "wide" ,
   year = 2023) %>% 
   dplyr::filter(GEOID != "15003981200" & GEOID !="15003981900") # filters out tract in NW Hawaiian Islands that makes map very small and Mamala Bay Golf Course that has %100 percent of families living below the poverty line(??)
 ```
@@ -110,11 +110,31 @@ Now let's look at family poverty in Honolulu County over time
 
 ```{r}
 # get the data
+texas_poverty <- get_acs(
+  geography = "tract",
+  variables = c(percent_poverty = "DP03_0119P"),
+  state = "TX",
+ # county = "Austin",
+  geometry = TRUE,
+  output = "wide" )
+#  year = 2023) %>% 
+#  dplyr::filter(GEOID != "15003981200" & GEOID !="15003981900")
+```
 
+### Map it
 
-# map it
+```{r}
+# MAP IT
+texas_poverty_map <- ggplot(texas_poverty) +
+  geom_sf_interactive(
+    aes(
+      fill = percent_povertyE,
+      tooltip = paste(NAME, ": ", percent_povertyE, "%"),
+      data_id = NAME)) +
+  scale_fill_viridis_c(option = "inferno") +
+  theme_void() 
 
-
+girafe(ggobj = texas_poverty_map, width = 700, height = 400)
 ```
 
 ## Back to Exploring Poverty...
