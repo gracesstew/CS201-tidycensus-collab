@@ -34,7 +34,9 @@ Directions:
 
 REMEMBER! [Pull]{.underline} before working in the `-collab.qmd` file. [Save, Commit, and Push]{.underline} your changes when you are done. The next person should [Pull]{.underline} before working, and so on.
 
-### Import Data
+### Tidy Census Collaboration: Tallen Vidal and Grace Stewart
+
+### Import Data 
 
 Investigating (insert variable here) on Oahu at the census tract level.
 
@@ -70,7 +72,31 @@ girafe(ggobj = texas_poverty_map, width = 700, height = 400)
 ### Time Series
 
 ```{r}
+tx_years <- 2014:2023 # specify years
+names(years) <- years
 
+tx_poverty_2014_2023 <- map_dfr(years, ~{
+  get_acs(
+    geography = "county",
+    variables = c(percent_poverty = "DP03_0119P"),
+    state = "TX",
+    county = "Austin",
+    year = .x,
+    survey = "acs5")}, .id = "year")
+```
+
+```{r}
+ggplot(tx_poverty_2014_2023, aes(x = year, y = estimate, group = 1)) + 
+  geom_ribbon(aes(ymax = estimate + moe, ymin = estimate - moe), 
+              fill = "steelblue",
+              alpha = 0.4) + 
+  geom_line(color = "steelblue") + 
+  geom_point(color = "steelblue", size = 2) + 
+  theme_minimal() + 
+  labs(title = "Austin County Poverty Rate (ACS Rolling 5-year estimates)",
+       x = "ACS Release Year (5-year window)",
+       y = "Percent in Poverty",
+       caption = "Shaded area represents margin of error around the estimate")
 ```
 
 ### Scatter plot
@@ -78,3 +104,5 @@ girafe(ggobj = texas_poverty_map, width = 700, height = 400)
 ```{r}
 
 ```
+
+### Description/Summary:
