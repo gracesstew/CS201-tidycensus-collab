@@ -4,23 +4,77 @@ format: html
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
+```         
 ```
 
-You can add options to executable code like this
+Interesting. With each point being a census tract, and a correlation coefficient (*R*) of -0.39, what is the relationship between poverty and education at the tract level in Honolulu County?
+
+------------------------------------------------------------------------
+
+## Challenge Time!!
+
+This could be a useful reference: <https://walker-data.com/census-r/index.html>
+
+Replace family poverty with another variable and:
+
+1.  Map it
+2.  Show the variable over time
+3.  Show the variable's relationship with education (or another variable of your choosing)
+4.  Describe what you found
+
+Directions:
+
+1.  One person save as tidycensus_intro-collab.Rmd, commit & push. The other person pull!
+
+2.  Take turns! Who will do what? Be careful not to overwrite one another.
+
+    -   I will be looking for at least 4 exchanges
+
+3.  Paste your challenge answers below
+
+REMEMBER! [Pull]{.underline} before working in the `-collab.qmd` file. [Save, Commit, and Push]{.underline} your changes when you are done. The next person should [Pull]{.underline} before working, and so on.
+
+### Import Data
+
+Investigating (insert variable here) on Oahu at the census tract level.
 
 ```{r}
-#| echo: false
-2 * 2
+# get the data
+texas_poverty <- get_acs(
+  geography = "tract",
+  variables = c(percent_poverty = "DP03_0119P"),
+  state = "TX",
+  #county = "Dallas",
+  geometry = TRUE,
+  output = "wide" )
+#  year = 2023) %>% 
+#  dplyr::filter(GEOID != "15003981200" & GEOID !="15003981900")
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+### Mapping
+
+```{r}
+# MAP IT
+texas_poverty_map <- ggplot(texas_poverty) +
+  geom_sf_interactive(
+    aes(
+      fill = percent_povertyE,
+      tooltip = paste(NAME, ": ", percent_povertyE, "%"),
+      data_id = NAME)) +
+  scale_fill_viridis_c(option = "inferno") +
+  theme_void() 
+
+girafe(ggobj = texas_poverty_map, width = 700, height = 400)
+```
+
+### Time Series
+
+```{r}
+
+```
+
+### Scatter plot
+
+```{r}
+
+```
