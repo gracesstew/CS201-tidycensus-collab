@@ -293,10 +293,10 @@ texas_poverty_2014_2023 <- map_dfr(years, ~{
 #plot time series
 ggplot(texas_poverty_2014_2023, aes(x = year, y = estimate, group = 1)) + 
   geom_ribbon(aes(ymax = estimate + moe, ymin = estimate - moe), 
-              fill = "steelblue",
+              fill = "magenta",
               alpha = 0.4) + 
-  geom_line(color = "steelblue") + 
-  geom_point(color = "steelblue", size = 2) + 
+  geom_line(color = "magenta") + 
+  geom_point(color = "magenta", size = 2) + 
   theme_minimal() + 
   labs(title = "Austin Poverty Rate (ACS Rolling 5-year estimates)",
        x = "ACS Release Year (5-year window)",
