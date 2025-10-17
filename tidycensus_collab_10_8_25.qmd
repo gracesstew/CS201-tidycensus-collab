@@ -38,6 +38,21 @@ REMEMBER! [Pull]{.underline} before working in the `-collab.qmd` file. [Save, Co
 
 ### Import Data 
 
+```{r}
+library(tidycensus)  # star of the show, what we will use to import data
+library(tidyverse) # you know her
+library(reactable) # makes nice looking, interactive tables
+library(ggiraph) # makes interactive graphs and maps
+library(ggpubr) # does some statistics and prints the results on our graphs
+options(progress_enabled = FALSE)
+```
+
+```{r}
+census_api_key("3ddbca3bc661c490a8075e5a9417a4d63f686900")
+acs_2023_variables <- load_variables(2023, "acs5/profile")
+reactable(acs_2023_variables, filterable = TRUE, showPageSizeOptions = TRUE, minRows = 10)
+```
+
 Investigating (insert variable here) on Oahu at the census tract level.
 
 ```{r}
