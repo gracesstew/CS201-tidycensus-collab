@@ -36,7 +36,7 @@ REMEMBER! [Pull]{.underline} before working in the `-collab.qmd` file. [Save, Co
 
 ### Tidy Census Collaboration: Tallen Vidal and Grace Stewart
 
-### Import Data 
+### Import Data
 
 ```{r}
 library(tidycensus)  # star of the show, what we will use to import data
