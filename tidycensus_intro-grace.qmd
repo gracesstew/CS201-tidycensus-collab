@@ -242,21 +242,66 @@ Investigating (insert variable here) on Oahu at the census tract level.
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 
-
+# get the data
+texas_poverty <- get_acs(
+  geography = "tract",
+  variables = c(percent_poverty = "DP03_0119P"),
+  state = "TX",
+  #county = "Dallas",
+  geometry = TRUE,
+  output = "wide" )
+#  year = 2023) %>% 
+#  dplyr::filter(GEOID != "15003981200" & GEOID !="15003981900")
 ```
 
 ### Mapping - Tallen
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 
+# MAP IT
+texas_poverty_map <- ggplot(texas_poverty) +
+  geom_sf_interactive(
+    aes(
+      fill = percent_povertyE,
+      tooltip = paste(NAME, ": ", percent_povertyE, "%"),
+      data_id = NAME)) +
+  scale_fill_viridis_c(option = "inferno") +
+  theme_void() 
 
+girafe(ggobj = texas_poverty_map, width = 700, height = 400)
 ```
 
 ### Time Series - Grace
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 
+#get time data
+years <- 2014:2023 # specify years
+names(years) <- years
 
+texas_poverty_2014_2023 <- map_dfr(years, ~{
+  get_acs(
+    geography = "county",
+    variables = c(percent_poverty = "DP03_0119P"),
+    state = "TX",
+    county = "Austin",
+    year = .x,
+    survey = "acs5")}, .id = "year")
+```
+
+```{r}
+#plot time series
+ggplot(texas_poverty_2014_2023, aes(x = year, y = estimate, group = 1)) + 
+  geom_ribbon(aes(ymax = estimate + moe, ymin = estimate - moe), 
+              fill = "steelblue",
+              alpha = 0.4) + 
+  geom_line(color = "steelblue") + 
+  geom_point(color = "steelblue", size = 2) + 
+  theme_minimal() + 
+  labs(title = "Austin Poverty Rate (ACS Rolling 5-year estimates)",
+       x = "ACS Release Year (5-year window)",
+       y = "Percent in Poverty",
+       caption = "Shaded area represents margin of error around the estimate")
 ```
 
 ### Scatter Plot - Grace
@@ -264,8 +309,31 @@ Investigating (insert variable here) on Oahu at the census tract level.
 Exploring the relationship between (insert variable here) and (insert variable here) with a scatter plot
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
+#get data for scatterplot
+texas_family_poverty_college_education <- get_acs(
+  geography = "tract",
+  variables = c(percent_poverty = "DP03_0119P",
+                percent_BA = "DP02_0068P"),
+  state = "TX",
+  county = "Austin",
+  geometry = TRUE,
+  output = "wide",
+  year = 2023) %>% 
+  dplyr::filter(GEOID != "15003981200" & GEOID !="15003981900")
+```
 
-
+```{r}
+#scatter plot
+ggplot(texas_family_poverty_college_education, aes(x = percent_povertyE,y = percent_BAE)) +
+  geom_point() +
+  geom_smooth() + # adds a regression line (LOESS)
+  stat_cor() + # prints R and p
+  theme_minimal() + 
+  labs(title = "Comparing Rates of Higher Education to Poverty, Austin County",
+       subtitle = "ACS 5-year, 2023 release",
+       x = "Percent of Families Living Below the Poverty Line",
+       y = "Percent with a BA or higher",
+       caption = "Shaded area represents margin of error around the estimate")
 ```
 
 ### Describe what you found
