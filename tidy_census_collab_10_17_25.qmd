@@ -61,7 +61,7 @@ texas_poverty <- get_acs(
   geography = "tract",
   variables = c(percent_poverty = "DP03_0119P"),
   state = "TX",
-  #county = "Dallas",
+  county = "Dallas",
   geometry = TRUE,
   output = "wide" )
 #  year = 2023) %>% 
