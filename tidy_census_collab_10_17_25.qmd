@@ -61,7 +61,7 @@ texas_poverty <- get_acs(
   geography = "tract",
   variables = c(percent_poverty = "DP03_0119P"),
   state = "TX",
-  county = "Dallas",
+  #county = "Dallas",
   geometry = TRUE,
   output = "wide" )
 #  year = 2023) %>% 
@@ -88,9 +88,9 @@ girafe(ggobj = texas_poverty_map, width = 700, height = 400)
 
 ```{r}
 tx_years <- 2014:2023 # specify years
-names(years) <- years
+names(tx_years) <- tx_years
 
-tx_poverty_2014_2023 <- map_dfr(years, ~{
+tx_poverty_2014_2023 <- map_dfr(tx_years, ~{
   get_acs(
     geography = "county",
     variables = c(percent_poverty = "DP03_0119P"),
@@ -102,7 +102,7 @@ tx_poverty_2014_2023 <- map_dfr(years, ~{
 
 ```{r}
 #plot time series
-ggplot(texas_poverty_2014_2023, aes(x = year, y = estimate, group = 1)) + 
+ggplot(tx_poverty_2014_2023, aes(x = year, y = estimate, group = 1)) + 
   geom_ribbon(aes(ymax = estimate + moe, ymin = estimate - moe), 
               fill = "magenta",
               alpha = 0.4) + 
@@ -146,3 +146,5 @@ ggplot(texas_family_poverty_college_education, aes(x = percent_povertyE,y = perc
 ```
 
 ### Description/Summary:
+
+Looking at the
