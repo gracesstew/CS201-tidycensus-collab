@@ -13,6 +13,8 @@ Interesting. With each point being a census tract, and a correlation coefficient
 
 ## Challenge Time!!
 
+### Tallen and Grace
+
 This could be a useful reference: <https://walker-data.com/census-r/index.html>
 
 Replace family poverty with another variable and:
