@@ -147,4 +147,4 @@ ggplot(texas_family_poverty_college_education, aes(x = percent_povertyE,y = perc
 
 ### Description/Summary:
 
-Looking at the map we created, throughout all of Texas, the county with the highest percentage of families with incomes below the poverty line is "Presidio County". This specific county has 52.6% of the families with income below the poverty line. I also noticed that many of the smaller counties in the lower region of the state had more ocurences of higher percentages
+Looking at the map we created, throughout all of Texas, the county with the highest percentage of families with incomes below the poverty line is "Presidio County". This specific county has 52.6% of the families with income below the poverty line. I also noticed that many of the smaller counties in the lower region of the state had more ocurrences of higher percentages. Looking at the poverty time series, it seems that Austin
